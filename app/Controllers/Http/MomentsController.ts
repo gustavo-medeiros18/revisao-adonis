@@ -30,4 +30,10 @@ export default class MomentsController {
       insertedMoment: results,
     }
   }
+
+  public async index() {
+    const moments = await Moment.all()
+
+    return moments
+  }
 }
