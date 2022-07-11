@@ -4,14 +4,14 @@ import Application from '@ioc:Adonis/Core/Application'
 import { v4 } from 'uuid'
 
 export default class MomentsController {
-  private validatonRules = {
+  private validationRules = {
     types: 'image',
     size: '5mb',
   }
 
   public async store({ request, response }: HttpContextContract) {
     const momentData = request.body()
-    const image = request.file('image', this.validatonRules)
+    const image = request.file('image', this.validationRules)
 
     if (image) {
       const imageName = `${v4()}.${image.extname}`
@@ -53,6 +53,37 @@ export default class MomentsController {
     return {
       message: 'Moment deleted',
       data: moment,
+    }
+  }
+
+  public async update({ request, params }: HttpContextContract) {
+    const id = params.id
+    const existentMoment = await Moment.findOrFail(id)
+
+    const newMomentData = request.body()
+
+    existentMoment.title = newMomentData.title
+    existentMoment.description = newMomentData.description
+
+    const imageFile = request.file('image', this.validationRules)
+
+    if (imageFile) {
+      if (newMomentData.image !== existentMoment.image || !existentMoment.image) {
+        const imageFileName = `${v4()}.${imageFile.extname}`
+
+        await imageFile.move(Application.tmpPath('uploads'), {
+          name: imageFileName,
+        })
+
+        existentMoment.image = imageFileName
+      }
+    }
+
+    await existentMoment.save()
+
+    return {
+      message: 'Moment updated successfully.',
+      data: existentMoment,
     }
   }
 }
