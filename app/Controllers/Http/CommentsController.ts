@@ -18,4 +18,12 @@ export default class CommentsController {
       insertedComment: insertedComment,
     }
   }
+
+  public async show({ params }: HttpContextContract) {
+    const momentId = params.momentId
+    await Moment.findOrFail(momentId)
+
+    const comments = await Comment.query().where('momentId', '=', momentId)
+    return comments
+  }
 }
