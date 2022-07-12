@@ -1,7 +1,10 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
 
 export default class Comment extends BaseModel {
+  @hasMany(() => Comment)
+  public comments: HasMany<typeof Comment>
+
   @column({ isPrimary: true })
   public id: number
 
