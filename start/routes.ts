@@ -30,4 +30,5 @@ Route.group(() => {
   Route.post('/moments/:momentId/comments', 'CommentsController.store')
   Route.get('/moments/:momentId/comments', 'CommentsController.index')
   Route.get('/moments/:momentId/comments/:commentId', 'CommentsController.show')
+  Route.patch('/moments/:momentId/comments/:commentId', 'CommentsController.update')
 }).prefix('/api')

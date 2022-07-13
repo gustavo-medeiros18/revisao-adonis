@@ -36,4 +36,23 @@ export default class CommentsController {
 
     return comment
   }
+
+  public async update({ params, request }: HttpContextContract) {
+    const momentId = params.momentId
+    await Moment.findOrFail(momentId)
+
+    const commentId = params.commentId
+    const existentComment = await Comment.findOrFail(commentId)
+    const newCommentData = request.body()
+
+    existentComment.username = newCommentData.username
+    existentComment.text = newCommentData.text
+
+    await existentComment.save()
+
+    return {
+      message: 'Comment updated successfully.',
+      updateCommentData: existentComment,
+    }
+  }
 }
