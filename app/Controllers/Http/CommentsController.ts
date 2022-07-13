@@ -19,7 +19,7 @@ export default class CommentsController {
     }
   }
 
-  public async show({ params }: HttpContextContract) {
+  public async index({ params }: HttpContextContract) {
     const momentId = params.momentId
     await Moment.findOrFail(momentId)
 
