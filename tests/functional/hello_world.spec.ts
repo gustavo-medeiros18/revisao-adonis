@@ -1,8 +1,16 @@
 import { test } from '@japa/runner'
 
 test('display welcome page', async ({ client }) => {
-  const response = await client.get('/')
+  const response = await client.get('/api')
 
-  response.assertStatus(200)
   response.assertBodyContains({ hello: 'world' })
+})
+
+test('comment creation', async ({ client }) => {
+  const response = await client.post('/api/moments/1/comments').json({
+    username: 'gustavo.medeiros',
+    text: 'Lorem ipsum',
+  })
+
+  response.assertStatus(201)
 })
