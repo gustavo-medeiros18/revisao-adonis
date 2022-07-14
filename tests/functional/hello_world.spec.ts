@@ -13,4 +13,12 @@ test('comment creation', async ({ client }) => {
   })
 
   response.assertStatus(201)
+  response.assertBodyContains({
+    message: 'Comment created',
+    insertedComment: {
+      username: 'gustavo.medeiros',
+      text: 'Lorem ipsum',
+      moment_id: '1',
+    },
+  })
 })
